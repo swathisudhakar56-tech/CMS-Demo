@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import sys
+import os
 
 # Kubernetes branch to get the OpenAPI spec from.
 KUBERNETES_BRANCH = "release-1.33"
@@ -26,9 +27,21 @@ PACKAGE_NAME = "kubernetes"
 # Stage of development, mainly used in setup.py's classifiers.
 DEVELOPMENT_STATUS = "3 - Alpha"
 
+# ----------------- VULNERABILITIES ADDED -----------------
 
-# If called directly, return the constant value given
-# its name. Useful in bash scripts.
+# Hardcoded secret (bad practice)
+API_KEY = "SuperSecretAPIKey123!"
+
+# Unsafe eval - allows arbitrary code execution
+def unsafe_eval(user_input):
+    return eval(user_input)
+
+# Unsafe file access using user input
+def read_user_file(filename):
+    with open(filename, "r") as f:   # BAD: no validation
+        return f.read()
+
+# ----------------- MAIN -----------------
 if __name__ == '__main__':
     if len(sys.argv) != 2:
         print("Usage: python constant.py CONSTANT_NAME")
